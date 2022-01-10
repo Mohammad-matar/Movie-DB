@@ -1,4 +1,7 @@
+const { response } = require("express");
+const e = require("express");
 const express = require("express");
+const res = require("express/lib/response");
 const { get } = require("express/lib/response");
 const app = express();
 const port = 3000;
@@ -21,4 +24,24 @@ app.get("/test", (req, res) => {
 });
 app.get("/time", (req, res) => {
   res.send({ status: 200, message: hours + ":" + seconds });
+});
+
+app.get(["/hello/:id", "/hello"], (req, res) => {
+  if (req.params.id !== undefined) {
+    res.send({ status: 200, message: `Hello, ${req.params.id}` });
+  } else {
+    res.send({ status: 404, message: "ID Not Found, Enter Your ID" });
+  }
+});
+
+app.get("/search", (req, res) => {
+  if (req.query.s !== undefined) {
+    res.send({ status: 200, message: "ok", data: req.query.s });
+  } else {
+    res.send({
+      status: 500,
+      error: true,
+      message: "you have to provide a search",
+    });
+  }
 });
